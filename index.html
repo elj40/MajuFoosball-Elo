@@ -5,17 +5,36 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>Foosball Eli</title>
+		<script src="data.js"></script>
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<h1 class='title'>MajuFoosball Elo System</h1>
-		<p>Winners</p>
-		<input type='text' placeholder='Attack'>
-		<input type='text' placeholder='Defence'>
-		<p>Losers</p>
-		<input type='text' placeholder='Attack'>
-		<input type='text' placeholder='Defence'>
-		<button class='foosball-button'>Submit</button>
-
+		<div class='main-container'>
+			<h1 class='title'>MajuFoosball Elo System</h1>
+			<div class='game-container'>
+				<div class="form-group">
+					<h2>Winners</h2>
+					<input id="i1" type="text" placeholder="Attack" onchange="isKnownPlayer()">
+					<input id="i2" type="text" placeholder="Defence" onchange="isKnownPlayer()">
+				</div>
+				<div class="form-group">
+					<h2>Losers</h2>
+					<input id="i3" type="text" placeholder="Attack" onchange="isKnownPlayer()">
+					<input id="i4" type="text" placeholder="Defence" onchange="isKnownPlayer()">
+				</div>
+				<button class='foosball-button' onclick="updateElos()">Submit</button>
+				
+			</div>
+		<div class="new-elo-container" id="results-screen">
+			<h2>Results:</h2>
+			<p id="player1">Player 1: 1000 <span>(+10)</span></p>
+			<p id="player2">Player 2: 1000 <span>(+10)</span></p>
+			<p id="player3">Player 3: 1000 <span>(+10)</span></p>
+			<p id="player4">Player 4: 1000 <span>(+10)</span></p>
+			<button class='return-button' onclick="resetPage()" >Return</button>
+		</div>
+		<a class='see-stats' href='#'>See stats</a>
+		</div>
+		<script src="script.js"></script>
 	</body>
 </html>
