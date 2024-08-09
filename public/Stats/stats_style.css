@@ -1,0 +1,91 @@
+/* Reset default styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box; /* Ensure padding and border are included in element's total width and height */
+}
+
+body {
+	font-family: Arial, sans-serif; /* Set a clean font for the body */
+	line-height: 1.6; /* Improve text readability */
+	background-color: #f9f9f9; /* Light background color for contrast */
+	color: #333; /* Dark text color for readability */
+	padding: 20px; /* Add padding to the body */
+}
+
+/* Title styling */
+h1 {
+	text-align: center; /* Center align the title */
+	margin-bottom: 20px; /* Space below the title */
+	color: #007BFF; /* Primary color for the title */
+}
+
+/* Home link styling */
+a {
+	display: block; /* Display as a block for better spacing */
+	text-align: center; /* Center the link */
+	margin: 10px 0; /* Space around the link */
+	color: #007BFF; /* Primary color */
+	text-decoration: none; /* Remove underline */
+	padding: 10px; /* Padding around the link */
+	border: 1px solid #007BFF; /* Border matching the color */
+	border-radius: 5px; /* Rounded corners */
+	transition: background-color 0.3s, color 0.3s; /* Transition effects */
+}
+
+a:hover {
+	background-color: #007BFF; /* Change background on hover */
+	color: white; /* Change text color on hover */
+}
+
+/* Input field styling */
+#stats-name {
+	width: 80%; /* Responsive width */
+	max-width: 400px; /* Limit maximum width */
+	padding: 10px; /* Padding inside the input */
+	display: block; /* Block element to take full width */
+	margin: 20px auto; /* Center with auto margins */
+	border: 1px solid #ccc; /* Light border */
+	border-radius: 5px; /* Rounded corners */
+	font-size: 1rem; /* Consistent font size */
+}
+
+/* State message styling */
+#state {
+	text-align: center; /* Center the state message */
+	margin: 15px 0; /* Space above and below */
+	font-style: italic; /* Italic style for distinction */
+}
+
+/* Table styling */
+#game-table {
+	width: 100%; /* Full width for the table */
+	border-collapse: collapse; /* Remove space between table cells */
+	margin-top: 20px; /* Space above the table */
+}
+
+#game-table th, #game-table td {
+	border: 1px solid #ddd; /* Light border for cells */
+	padding: 10px; /* Padding for cells */
+	text-align: left; /* Left-align text in cells */
+}
+
+#game-table th {
+	background-color: #007BFF; /* Table header background color */
+	color: white; /* White text color for the header */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+	h1 {
+		font-size: 1.5rem; /* Smaller title on small screens */
+	}
+
+	#stats-name {
+		width: 90%; /* Wider input on smaller screens */
+	}
+
+	#game-table th, #game-table td {
+		font-size: 0.9rem; /* Smaller font size for table on small screens */
+	}
+}
