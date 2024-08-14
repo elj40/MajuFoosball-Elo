@@ -5,6 +5,7 @@ const stateInfoElement = document.getElementById('state');
 const defaultTable = `
 			<tr>
 				<th>Game</th>
+				<th>Outcome</th>
 				<th>Date</th>
 				<th>Teammate</th>
 				<th>Opponent Attack</th>
@@ -22,8 +23,8 @@ async function start() {
 }
 
 function resizeTableColumns(width) {
-	const longHeaders = ['Game','Date','Teammate', 'Opponent Attack','Opponent Defense', 'Elo']
-	const shortHeaders = ['G','D','TM', 'OPP A','OPP D', 'ELO']
+	const longHeaders = ['Game','Outcome','Date','Teammate', 'Opponent Attack','Opponent Defense', 'Elo']
+	const shortHeaders = ['G','O','D','TM', 'OPP A','OPP D', 'ELO']
 
 	const headers = (width > 370) ? longHeaders : shortHeaders;
 
@@ -46,11 +47,12 @@ function loadStats(nameInput, table, db) {
 	}
 
 	stateInfoElement.innerText = "Showing stats for: " + name;
-	let i = 0;
-	for (let game of db[name]) {
-		let row = document.createElement("tr");
+	for (let i = db[name].length-1; i>=0; i--) {
+		let game = db[name][i];
+		let row = document.createElement('tr');
 
-		row.appendChild(makeCell(++i));
+		row.appendChild(makeCell(i+1));
+		row.appendChild(makeCell(game["outcome"]));
 		row.appendChild(makeCell(game["date"]));
 		row.appendChild(makeCell(game["teammate"]));
 		row.appendChild(makeCell(game["opponentA"]));
