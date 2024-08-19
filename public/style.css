@@ -58,8 +58,10 @@ input[type='text'] {
 }
 
 /* Link styling for stats button */
-.stats-btn {
-	display: inline-block; /* Inline block to style like a button */
+.btn {
+	width: 50%;
+	margin: 10px auto;
+	display: block; /* Inline block to style like a button */
 	text-align: center; /* Center text */
 	margin-top: 10px; /* Space above the link */
 	color: #007BFF; /* Primary color */
@@ -70,7 +72,7 @@ input[type='text'] {
 	transition: background-color 0.3s, color 0.3s; /* Transition effects */
 }
 
-.stats-btn:hover {
+.btn:hover {
 	background-color: #007BFF; /* Change background on hover */
 	color: white; /* Change text color on hover */
 }
@@ -81,7 +83,7 @@ input[type='text'] {
 		font-size: 1.5rem; /* Smaller title on small screens */
 	}
 
-	input[type='text'], .foosball-btn, .stats-btn {
+	input[type='text'], .foosball-btn, .btn {
 		width: 90%; /* Wider inputs/buttons on smaller screens */
 	}
 }

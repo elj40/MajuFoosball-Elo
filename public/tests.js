@@ -1,6 +1,6 @@
 function runTests(dom, db) {
 	for (let i =0; i < tests.length; i++) {
-		for (let key in dom) dom[key].value = "";
+		clearInputs();
 		pass = tests[i](dom, db);
 		msg = pass ? "success" : "FAILED";
 		console.log("Test " + i +": " + msg);

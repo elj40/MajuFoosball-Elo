@@ -3,6 +3,7 @@ const winDefense = document.getElementById("winD");
 const loseAttack = document.getElementById("loseA"); 
 const loseDefence = document.getElementById("loseB"); 
 const saveBtn = document.getElementById('save');
+const infoP = document.getElementById('info');
 
 
 function updateDatabase(db) {
@@ -159,8 +160,15 @@ function generateGamePerPlayer(p,t,oA,oD,wl,e) {
 	}
 }
 
+function clearInputs() {
+	winAttack.value = "";
+	winDefense.value = "";
+	loseAttack.value = "";
+	loseDefence.value = "";
+}
+
 async function run() {
-	let testing = true;
+	let testing = false;
 	let database;
 	if (testing) database = {};
 	else database = await loadData();
@@ -169,6 +177,7 @@ async function run() {
 		database = updateDatabase(database);
 		const dataStr = JSON.stringify(database); 
 		saveData(dataStr);
+		clearInputs();
 	});
 	const dom =  {
 		wai: winAttack,
@@ -177,7 +186,10 @@ async function run() {
 		ldi: loseDefence,
 		submit: saveBtn,
 	}
-	if (testing) runTests(dom, database);
+	if (testing) {
+		runTests(dom, database);
+		info.innerText = "TESTING WEBSITE, PLEASE LEAVE IF YOU ARE NOT DEVELOPING";
+	}
 }
 
 run();
