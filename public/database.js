@@ -1,18 +1,23 @@
-function saveData(data) {
-	if (typeof(data)!='string') {
-		console.error("Error on saving:\nData is expected as string, got "+typeof(data));
+function saveData(dataJSON) {
+	if (typeof(dataJSON)!='object') {
+		console.error("Error on saving:\nData is expected as JSON object, got "+typeof(dataJSON));
 		return;
 	} else {
-		console.log("Received string, continuing");
+		//console.log("Received string, continuing");
 	}
-	console.log(data,typeof(data));
-	let ndata = JSON.stringify({data});
-	console.log(ndata);
+	
+	if (!dataJSON.hasOwnProperty('data')) {
+		console.error("JSON object must have property must have dataJSON of type string in it!");
+		return;
+	}
+	console.log(dataJSON, typeof(dataJSON));
+	const data = JSON.stringify(dataJSON);
+	
 
 	fetch('/save-data', {
 		method: 'POST',
 		headers: { 'Content-Type' : 'application/json' },
-		body:ndata,
+		body: data,
 	})
 	.then(response => response.text())
 	.then(message => console.log(message))
@@ -23,8 +28,8 @@ async function loadData() {
 	try {
 		let db;
 		let response = await fetch('/load-data');
-		let data = await response.text();
-		return data;
+		let dataJSON = await response.text();
+		return dataJSON;
 	} catch (err) {
 		console.log("Error loading: ", err);
 	}

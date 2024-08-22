@@ -2,9 +2,10 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-const gamesFileName = path.join(__dirname, 'data.csv');
+const dataFileName = path.join(__dirname, 'games.csv');
 const IP = '0.0.0.0';
 const PORT = 3000;
+const BRANCH = "CSV"
 
 app = express();
 
@@ -13,11 +14,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.post('/save-data', (req,res)=> {
-	console.log(req);
-	console.log("Insave data:");
-	let data = req.body;
-	console.log(data,typeof(data));
-	fs.appendFile(dataFileName, data, err => {
+	let dataJSON = req.body;
+	console.log(dataJSON,typeof(dataJSON));
+	dataJSON = JSON.stringify(dataJSON);
+	fs.appendFile(dataFileName, dataJSON, err => {
 		if (err) {
 			console.log(err);
 			res.status(500).send("Failed to save.");
@@ -31,7 +31,7 @@ app.post('/save-data', (req,res)=> {
 app.get('/load-data', (req,res) => {
 	try {
 		const fileData = fs.readFileSync(dataFileName, 'utf8');
-		res.status(200).text(fileData);
+		res.status(200).json({fileData});
 	} catch (err) {
 		res.status(500).send('Error loading data: ' + err.message);
 	}
@@ -39,5 +39,6 @@ app.get('/load-data', (req,res) => {
 
 
 app.listen(PORT, () => {
+	console.log('On branch: ' + BRANCH);
 	console.log('Listening on '+ IP + ':' + PORT);
 });

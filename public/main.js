@@ -134,7 +134,11 @@ async function run() {
 		submit: saveBtn,
 	}
 	if (testing) {
+		const loadedData = await loadData();
+		console.log(loadedData);
 		info.innerText = "TESTING WEBSITE, PLEASE LEAVE IF YOU ARE NOT DEVELOPING";
+		let a = {data:1};
+		saveData(a);
 		//runTests(dom, database);
 	}
 }
