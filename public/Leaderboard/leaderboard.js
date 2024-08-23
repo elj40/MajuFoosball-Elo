@@ -1,5 +1,5 @@
 const table = document.getElementById('game-table');
-var testPlayers = ['TEST1','TEST2']; 
+var testPlayers = ['TEST0','TEST1','TEST2']; 
 
 for (let l of ['A','B','C','D']) {
 	for (let i = 0; i <= 8; i++) {
@@ -13,7 +13,7 @@ console.log(testPlayers);
 async function loadTable() {
 	const db = await loadData();
 	console.log(db);
-	let data = Object.entries(db);
+	let data = Object.entries(db).filter(g => g[0] != "testing");
 	data.sort((a,b) => sortFn(a,b));
 
 	for (let [name,games] of data) {

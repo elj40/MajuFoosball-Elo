@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const dataFileName = path.join(__dirname, 'data.json');
+const testFileName = path.join(__dirname, 'test_data.json');
 const port = 3000;
 
 app = express();
@@ -12,10 +13,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.post('/save-data', (req,res)=> {
-	let data = req.body;
-	if (typeof(data)=='object') data = JSON.stringify(data);
+	let dataJSON = req.body;
+	let filename = (dataJSON["testing"]) ? testFileName : dataFileName;
+	let data;
+	if (typeof(dataJSON)=='object') data = JSON.stringify(dataJSON);
+	else data = dataJSON;
 	console.log(data,typeof(data));
-	fs.writeFile(dataFileName, data, err => {
+	fs.writeFile(filename, data, err => {
 		if (err) {
 			console.log(err);
 			res.status(500).send("Failed to save.");

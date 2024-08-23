@@ -6,7 +6,6 @@ function runTests(dom, db) {
 		console.log("Test " + i +": " + msg);
 	}
 	console.log(db);
-	console.log("TESTS COMPLETED");
 }
 const tests = [
 	(dom,db) => {

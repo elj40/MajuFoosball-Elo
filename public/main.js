@@ -4,9 +4,10 @@ const loseAttack = document.getElementById("loseA");
 const loseDefence = document.getElementById("loseB"); 
 const saveBtn = document.getElementById('save');
 const infoP = document.getElementById('info');
+let gameMode = 2;
 
 
-function updateDatabase(db) {
+function updateDatabase(db, mode) {
 	
 	const wa = 	winAttack.value.toUpperCase().trim();
 	const wd = 	winDefense.value.toUpperCase().trim();
@@ -101,30 +102,7 @@ function calculateEloChange(elos, wl, db) {
 	return change;
 }
 
-function calculateNewElo(players, wl, db) {
-	let playerElos = [];
-	for (let p of players) {
-		let l = db[p].length;
-		let exists =db.hasOwnProperty(p) 
-		let e;
-		if (p=='') e = -1;
-		else if (exists && l>0) e = db[p][l-1].elo;
-		else if (exists) e = 1000;
-		else console.log(p + " does not exist");
-		playerElos.push(e);
-	}
-
-	if (playerElos[0]==-1) playerElos[0] = playerElos[1];
-	if (playerElos[1]==-1) playerElos[1] = playerElos[0];
-	if (playerElos[2]==-1) playerElos[2] = playerElos[3];
-	if (playerElos[3]==-1) playerElos[3] = playerElos[2];
-
-	let winAvg = (playerElos[0]+playerElos[1])/2;
-	let loseAvg = (playerElos[2]+playerElos[3])/2;
-
-	const ra = winAvg;
-	const rb = loseAvg;
-
+function calculateEloChange2(ra, rb, wl, db) {
 	const k = 32;
 	const c = 400;
 
@@ -137,8 +115,9 @@ function calculateNewElo(players, wl, db) {
 	const sa = (wl=='W') ? 1 : 0;
 
 	const nra = r + k*(sa - ea);
+	const change = k*(sa-ea);
 
-	return nra;
+	return change;
 }
 
 function generateGamePerPlayer(p,t,oA,oD,wl,e) {
@@ -167,18 +146,38 @@ function clearInputs() {
 	loseDefence.value = "";
 }
 
+function switchGameMode(mode) {
+	if (mode == 1) {
+		winDefense.style.display = "none";
+		loseDefence.style.display = "none";
+	}
+	if (mode == 2) {
+		winDefense.style.display = "block";
+		loseDefence.style.display = "block";
+	}
+	if (mode > 2 || mode < 1) {
+		console.error("SOMEHOW MODE NOT IN RANGE");
+		return;
+	}
+	gameMode = mode; 
+
+}
+
 async function run() {
 	let testing = false;
 	let database;
 	if (testing) database = {};
 	else database = await loadData();
-	console.log(database);
+	console.log("DB at start: ", database);
 	saveBtn.addEventListener('click', ()=> {
-		database = updateDatabase(database);
+		database = updateDatabase(database, gameMode);
+		database["testing"] = testing;
 		const dataStr = JSON.stringify(database); 
-		saveData(dataStr);
+		if (testing) console.log(database);
+		else saveData(dataStr);
 		clearInputs();
 	});
+	switchGameMode(gameMode);
 	const dom =  {
 		wai: winAttack,
 		wdi: winDefense,
@@ -187,8 +186,9 @@ async function run() {
 		submit: saveBtn,
 	}
 	if (testing) {
-		runTests(dom, database);
 		info.innerText = "TESTING WEBSITE, PLEASE LEAVE IF YOU ARE NOT DEVELOPING";
+		runTests(dom, database);
+		saveBtn.setAttribute("disabled", "disabled");
 	}
 }
 
