@@ -1,85 +1,91 @@
 const winAttack = document.getElementById("winA"); 
-const winDefense = document.getElementById("winD"); 
+const winDefence = document.getElementById("winD"); 
 const loseAttack = document.getElementById("loseA"); 
-const loseDefence = document.getElementById("loseB"); 
+const loseDefence = document.getElementById("loseD"); 
+const gameForm = document.getElementById("form");
 const saveBtn = document.getElementById('save');
 const infoP = document.getElementById('info');
 
+var GAME_MODE = 2;
 
-function updateDatabase(db) {
+function addNewPlayer(player, db) {
+	console.log("Creating new player: " + player);
+	db[player] = {
+	     elo: [1000],
+	     games_won: 0,
+	     games_lost: 0,
+	     games_played: 0
+	}
+}
+
+function updatePlayer(newElo, outcome, db) {
+	console.assert(!isNaN(newElo), "New Elo is not a number");
+	console.assert(outcome == 'W' || outcome == 'L', "Outcome should be W or L");
+	db[player].elo.push(newElo);
+	db[player].games_played++;
+
+	if (outcome == 'W') db[player].games_won++;
+	else db[player].games_lost++;
+}
+// This function updates the player databse for if there were 1 players
+function updatePlayerDB1(db) {
 	const wa = 	winAttack.value.toUpperCase().trim();
-	const wd = 	winDefense.value.toUpperCase().trim();
 	const la =	loseAttack.value.toUpperCase().trim();
-	const ld =	loseDefence.value.toUpperCase().trim();
 
-	if (!db.hasOwnProperty(wa)) { db[wa] = []; console.log("Generating space for ",wa); }
-	if (!db.hasOwnProperty(wd)) { db[wd] = []; console.log("Generating space for ",wd); }
-	if (!db.hasOwnProperty(la)) { db[la] = []; console.log("Generating space for ",la); }
-	if (!db.hasOwnProperty(ld)) { db[ld] = []; console.log("Generating space for ",ld); }
+	if (!db.hasOwnProperty(wa)) addNewPlayer(wa, db);
+	if (!db.hasOwnProperty(la)) addNewPlayer(la, db);
 
-	const players = [wa,wd,la,ld];
-	const playerElos = getPlayerElos(players,db);
-	const elos = removeEmptyElos(playerElos);
-	
-	wad_elo = getCurrentElo(wa,db);
-	wdd_elo = getCurrentElo(wd,db);
-	lad_elo = getCurrentElo(la,db);
-	ldd_elo = getCurrentElo(ld,db);
+	wad_elo = db[wa].elo[db[wa].games_played];
+	lad_elo = db[la].elo[db[la].games_played];
 
-	wad_elo += calculateEloChange(elos,'W',db);
-	wdd_elo += calculateEloChange(elos,'W',db);
-	lad_elo += calculateEloChange(elos,'L',db);
-	ldd_elo += calculateEloChange(elos,'L',db);
+	const eloWin = wad_elo;
+	const eloLose = lad_elo;
 
-	wad = generateGamePerPlayer('A',wd,la,ld,'W',wad_elo);
-	wdd = generateGamePerPlayer('D',wa,la,ld,'W',wdd_elo);
-	lad = generateGamePerPlayer('A',ld,wa,wd,'L',lad_elo);
-	ldd = generateGamePerPlayer('D',la,wa,wd,'L',ldd_elo);
+	wad_elo += calculateEloChange(eloWin, eloLose,'W',db);
+	wdd_elo += calculateEloChange(eloWin, eloLose,'W',db);
+	lad_elo += calculateEloChange(eloWin, eloLose,'L',db);
+	ldd_elo += calculateEloChange(eloWin, eloLose,'L',db);
 
-	if (wa.length>0) db[wa].push(wad);
-	if (wd.length>0) db[wd].push(wdd);
-	if (la.length>0) db[la].push(lad);
-	if (ld.length>0) db[ld].push(ldd);
+	wad = updatePlayer(wad_elo, 'W', db);
+	wdd = updatePlayer(wdd_elo, 'W', db);
+	lad = updatePlayer(lad_elo, 'L', db);
+	ldd = updatePlayer(ldd_elo, 'L', db);
 
-	//console.log(db);
+	console.log(db);
 	return db;
 }
-function updateDatabase(db) {
+// This function updates the player databse for if there were 4 players
+function updatePlayerDB2(db) {
 	const wa = 	winAttack.value.toUpperCase().trim();
-	const wd = 	winDefense.value.toUpperCase().trim();
+	const wd = 	winDefence.value.toUpperCase().trim();
 	const la =	loseAttack.value.toUpperCase().trim();
 	const ld =	loseDefence.value.toUpperCase().trim();
 
-	if (!db.hasOwnProperty(wa)) { db[wa] = []; console.log("Generating space for ",wa); }
-	if (!db.hasOwnProperty(wd)) { db[wd] = []; console.log("Generating space for ",wd); }
-	if (!db.hasOwnProperty(la)) { db[la] = []; console.log("Generating space for ",la); }
-	if (!db.hasOwnProperty(ld)) { db[ld] = []; console.log("Generating space for ",ld); }
 
-	const players = [wa,wd,la,ld];
-	const playerElos = getPlayerElos(players,db);
-	const elos = removeEmptyElos(playerElos);
-	
-	wad_elo = getCurrentElo(wa,db);
-	wdd_elo = getCurrentElo(wd,db);
-	lad_elo = getCurrentElo(la,db);
-	ldd_elo = getCurrentElo(ld,db);
+	if (!db.hasOwnProperty(wa)) addNewPlayer(wa, db);
+	if (!db.hasOwnProperty(wd)) addNewPlayer(wd, db);
+	if (!db.hasOwnProperty(la)) addNewPlayer(la, db);
+	if (!db.hasOwnProperty(ld)) addNewPlayer(ld, db);
 
-	wad_elo += calculateEloChange(elos,'W',db);
-	wdd_elo += calculateEloChange(elos,'W',db);
-	lad_elo += calculateEloChange(elos,'L',db);
-	ldd_elo += calculateEloChange(elos,'L',db);
+	wad_elo = db[wa].elo[db[wa].games_played];
+	wdd_elo = db[wd].elo[db[wd].games_played];
+	lad_elo = db[la].elo[db[la].games_played];
+	ldd_elo = db[ld].elo[db[ld].games_played];
 
-	wad = generateGamePerPlayer('A',wd,la,ld,'W',wad_elo);
-	wdd = generateGamePerPlayer('D',wa,la,ld,'W',wdd_elo);
-	lad = generateGamePerPlayer('A',ld,wa,wd,'L',lad_elo);
-	ldd = generateGamePerPlayer('D',la,wa,wd,'L',ldd_elo);
+	const eloWin = (wad_elo + wdd_elo)/2;
+	const eloLose = (lad_elo + ldd_elo)/2;
 
-	if (wa.length>0) db[wa].push(wad);
-	if (wd.length>0) db[wd].push(wdd);
-	if (la.length>0) db[la].push(lad);
-	if (ld.length>0) db[ld].push(ldd);
+	wad_elo += calculateEloChange(eloWin, eloLose,'W',db);
+	wdd_elo += calculateEloChange(eloWin, eloLose,'W',db);
+	lad_elo += calculateEloChange(eloWin, eloLose,'L',db);
+	ldd_elo += calculateEloChange(eloWin, eloLose,'L',db);
 
-	//console.log(db);
+	wad = updatePlayer(wad_elo, 'W', db);
+	wdd = updatePlayer(wdd_elo, 'W', db);
+	lad = updatePlayer(lad_elo, 'L', db);
+	ldd = updatePlayer(ldd_elo, 'L', db);
+
+	console.log(db);
 	return db;
 }
 
@@ -104,6 +110,34 @@ function generateGamePerPlayer(p,t,oA,oD,wl,e) {
 	}
 }
 
+function generateCSVGame() {
+	var currentdate = new Date(); 
+
+	var datetime = currentdate.getDate() + "/"
+	                + (currentdate.getMonth()+1)  + "/" 
+	                + currentdate.getFullYear() + " @ "  
+	                + currentdate.getHours() + ":"  
+	                + currentdate.getMinutes() + ":" 
+	                + currentdate.getSeconds();
+
+	const wa = 	winAttack.value.toUpperCase().trim();
+	const wd = 	winDefense.value.toUpperCase().trim();
+	const la =	loseAttack.value.toUpperCase().trim();
+	const ld =	loseDefence.value.toUpperCase().trim();
+
+	let csv;
+
+	csv = datetime + ",";
+	csv += wa + ",";
+	csv += wd + ",";
+	csv += la + ",";
+	csv += ld;
+	csv += "\n";
+
+	return csv;
+}
+
+
 function clearInputs() {
 	winAttack.value = "";
 	winDefense.value = "";
@@ -113,33 +147,30 @@ function clearInputs() {
 
 async function run() {
 	let testing = true;
-	let database;
-	if (testing) database = "";
-	else database = await loadData();
-	
-	database = parseCSV(database);
+	let playerDB;
+	playerDB = await loadPlayers();
 
-	saveBtn.addEventListener('click', ()=> {
-		database = updateDatabase(database);
-		const dataStr = JSON.stringify(database); 
-		saveData(dataStr);
+	gameForm.addEventListener('submit', (e)=> {
+		e.preventDefault();
+		if (GAME_MODE == 1)
+			updatePlayerDB1(playerDB);
+		else
+			updatePlayerDB2(playerDB);
+
+		const newGame = generateCSVGame();
+		saveGame(newGame);
 		clearInputs();
 	});
-	console.log(database);
+	console.log(playerDB);
 	const dom =  {
 		wai: winAttack,
-		wdi: winDefense,
+		wdi: winDefence,
 		lai: loseAttack,
 		ldi: loseDefence,
 		submit: saveBtn,
 	}
 	if (testing) {
-		const loadedData = await loadData();
-		console.log(loadedData);
 		info.innerText = "TESTING WEBSITE, PLEASE LEAVE IF YOU ARE NOT DEVELOPING";
-		let a = {data:1};
-		saveData(a);
-		//runTests(dom, database);
 	}
 }
 

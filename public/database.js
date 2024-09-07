@@ -36,6 +36,18 @@ async function loadData() {
 
 }
 
+async function saveGame(game) {
+	console.log("TODO: Save game");
+}
+async function loadAllGames() {
+	console.log("TODO: Load games");
+	return [];
+}
+async function loadPlayers(game) {
+	console.log("TODO: Load games");
+	return {};
+}
+
 function parseCSV(data) {
 	let parsed = [data];
 	return parsed;
