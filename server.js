@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const TESTING = true;		//Variable to put program in development state
-const OVERWRITE = true && TESTING;	//Allows overwriting of database, use ONLY when testing is true;
+const OVERWRITE = false && TESTING;	//Allows overwriting of database, use ONLY when testing is true;
 
 const gamesFileName = path.join(__dirname, TESTING ? 'TEST_GAMES.CSV' : 'GAMES.CSV');
 const playersFileName = path.join(__dirname, TESTING ? 'TEST_PLAYERS.JSON' : 'PLAYERS.JSON');
@@ -66,7 +66,7 @@ app.get('/load-players', (req, res) => {
 		res.send("Could not load players, check server error");
 		return;
 	}
-	console.log(players);
+	//console.log(players);
 	res.json(players);
 });
 
@@ -79,6 +79,8 @@ app.listen(PORT, () => {
 	if (OVERWRITE) {
 		console.log("OVERWRITING GAMES FILE: ", gamesFileName);
 		fs.writeFileSync(gamesFileName, "");
+		console.log("OVERWRITING PLAYERS FILE: ", playersFileName);
+		fs.writeFileSync(playersFileName, "");
 	}
 });
 
