@@ -1,0 +1,78 @@
+{
+    "T": {
+        "elo1": [
+            1000,
+            1016,
+            998.5304984710245,
+            982.6658413353916
+        ],
+        "elo2": [
+            1000
+        ],
+        "games_won": 1,
+        "games_lost": 2,
+        "games_played": 3
+    },
+    "Y": {
+        "elo1": [
+            1000,
+            984,
+            1001.4695015289755,
+            1017.3341586646084
+        ],
+        "elo2": [
+            1000
+        ],
+        "games_won": 2,
+        "games_lost": 1,
+        "games_played": 3
+    },
+    "Q": {
+        "elo1": [
+            1000
+        ],
+        "elo2": [
+            1000,
+            1016
+        ],
+        "games_won": 1,
+        "games_lost": 0,
+        "games_played": 1
+    },
+    "W": {
+        "elo1": [
+            1000
+        ],
+        "elo2": [
+            1000,
+            1016
+        ],
+        "games_won": 1,
+        "games_lost": 0,
+        "games_played": 1
+    },
+    "E": {
+        "elo1": [
+            1000
+        ],
+        "elo2": [
+            1000,
+            984
+        ],
+        "games_won": 0,
+        "games_lost": 1,
+        "games_played": 1
+    },
+    "R": {
+        "elo1": [
+            1000
+        ],
+        "elo2": [
+            1000,
+            984
+        ],
+        "games_won": 0,
+        "games_lost": 1,
+        "games_played": 1
+    }
+}

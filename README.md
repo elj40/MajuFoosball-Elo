@@ -18,11 +18,10 @@ Simple website to track elo of foosball in majuba
 
 **Game input**
 - Generate game data 
-	- Oragnise data
+	- Oragnise data considernig type of game
 	- Calculate elo change of each player (use highest players elo?, or average, or lowest?)
 - Send to server:
-	- Game: (Date,  WAttack, WDefense, LAttack, LDefence)
-	- Players: Update elos, games played
+	- Game: (Date, Type, WAttack, WDefense, LAttack, LDefence)
 
 **Leaderboard**
 - Load player file
@@ -49,5 +48,10 @@ Simple website to track elo of foosball in majuba
 - Use pure http? or express (this for now)
 - load games: read entire games file and return it
 - save game: append to games.csv file and update players.json
+	- Players: Update elos, games played
 - load leaderboard: read players.json and return it
 - IMPORTANT: do not allow program to delete any data, data deletion will be done manually from now on or only on test data
+
+## Fairness
+
+- Both teams have to code somehow before it gets entered

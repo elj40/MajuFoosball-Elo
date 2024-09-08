@@ -37,8 +37,20 @@ async function loadData() {
 }
 
 async function saveGame(game) {
-	console.log("TODO: Save game");
+	console.assert(typeof(game) == 'string', "Game must be of type string");
+	fetch('/save-game', {
+		method: 'POST',
+		headers: { 'Content-Type': 'text/plain' },
+		body: game,
+	})
+	.then(response => response.text())
+	.then(message => console.log(message))
+	.catch(err => console.error('Error saving: ', err));
 }
+async function savePlayerDB(db) {
+	console.log("TODO: Save PlayerDB");
+}
+
 async function loadAllGames() {
 	console.log("TODO: Load games");
 	return [];
