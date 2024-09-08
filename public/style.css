@@ -62,6 +62,11 @@ input[type='text'] {
 	transition: background-color 0.3s; /* Smooth background color change */
 }
 
+#game-mode {
+	border: 1px solid black; /* Border matching the color */
+	color: black;  
+}
+
 .foosball-btn:hover {
 	background-color: #218838; /* Darker green on hover */
 }

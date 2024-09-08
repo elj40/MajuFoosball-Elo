@@ -75,8 +75,6 @@ async function run() {
 	console.log("Main playerDB: ", JSON.parse(playerDB));
 	if (testing) {
 		info.innerText = "TESTING WEBSITE, PLEASE LEAVE IF YOU ARE NOT DEVELOPING";
-		runTests(dom, database);
-		saveBtn.setAttribute("disabled", "disabled");
 	}
 }
 
