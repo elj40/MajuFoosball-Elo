@@ -42,7 +42,7 @@ function loadGames(filters, table, games) {
 		row.appendChild(makeCell(loseAttack, filters.name));
 		row.appendChild(makeCell(loseDefence, filters.name));
 
-		console.log(row);
+		//console.log(row);
 
 		tableElement.appendChild(row);
 	}
@@ -71,7 +71,7 @@ function makeCell(text, emphasis) {
 	let cell = document.createElement('td');
 	if (text == emphasis) cell.innerHTML = "<u><strong>"+text+"</strong></u>";
 	else cell.innerText = text;
-	console.log(cell);
+	//console.log(cell);
 	return cell;
 }
 

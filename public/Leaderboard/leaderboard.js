@@ -1,4 +1,5 @@
 const table = document.getElementById('game-table');
+const heading = document.getElementById('heading');
 const changeModeBtn = document.getElementById('change-mode-btn');
 
 const emptyTable = table.innerHTML;
@@ -6,12 +7,13 @@ var GAME_MODE = 2;
 
 
 changeModeBtn.addEventListener("click", ()=> {
-	changeModeBtn.innerText = "Change to "+GAME_MODE+"vs"+GAME_MODE;
+	changeModeBtn.innerText = "Change to "+GAME_MODE+" vs "+GAME_MODE;
 
 	if (GAME_MODE == 1) GAME_MODE = 2;
 	else if (GAME_MODE == 2) GAME_MODE = 1;
 	
 	table.innerHTML = emptyTable;
+	heading.innerText = "Leaderboard: "+GAME_MODE+" vs "+GAME_MODE;
 	loadTable();
 });
 
@@ -29,12 +31,12 @@ async function loadTable() {
 
 	for (let [name,info] of data) {
 
-		const elo = info.elo[GM].at(-1);
+		const elo = Math.round(info.elo[GM].at(-1));
 		const totalGames = info.games_played[GM];
 		const won = info.games_won[GM];
 		const lost = info.games_lost[GM];
 
-		console.log(name, elo, totalGames, won, lost);
+		//console.log(name, elo, totalGames, won, lost);
 
 		const row = document.createElement('tr');
 		row.appendChild(makeCell(name));

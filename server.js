@@ -52,7 +52,7 @@ app.get('/load-all-games', (req, res) => {
 		res.send("Could not load games, check server error");
 		return;
 	}
-	console.log(games);
+	//console.log(games);
 	//Maybe do some processing here?
 	res.send(games);
 });
@@ -104,7 +104,7 @@ function updatePlayerDB(game) {
 	}
 
 	const playerDBText = JSON.stringify(playerDB, null, 4);
-	console.log("PLAYER_DB: \n", playerDBText);
+	//console.log("PLAYER_DB: \n", playerDBText);
 
 	try {
 	fs.writeFileSync(playersFileName, playerDBText);
