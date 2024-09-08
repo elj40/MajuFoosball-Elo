@@ -4,7 +4,6 @@ const stateInfoElement = document.getElementById('state');
 
 const defaultTable = tableElement.innerHTML; 
 
-//window.onresize = () => {resizeTableColumns(window.innerWidth);}
 async function start() {
 	let games = await loadAllGames();
 	loadGames({}, tableElement, games); 
@@ -13,22 +12,8 @@ async function start() {
 		loadGames({name: filter_name}, tableElement,  games)
 		});
 
-	//resizeTableColumns(window.innerWidth);
 }
 
-//function resizeTableColumns(width) {
-//	const longHeaders = ['Game','Outcome','Date','Teammate', 'Opponent Attack','Opponent Defense', 'Elo']
-//	const shortHeaders = ['G','O','D','TM', 'OPP A','OPP D', 'ELO']
-//
-//	const headers = (width > 370) ? longHeaders : shortHeaders;
-//
-//	const headerElements = tableElement.getElementsByTagName('th');
-//
-//	for (let i = 0; i < headers.length; i++) {
-//		headerElements[i].innerText = headers[i];
-//	}
-//
-//}
 
 function loadGames(filters, table, games) {
 	console.log('Loading stats');

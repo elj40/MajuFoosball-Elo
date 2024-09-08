@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const TESTING = true;		//Variable to put program in development state
-const OVERWRITE = false && TESTING;	//Allows overwriting of database, use ONLY when testing is true;
+const OVERWRITE = true && TESTING;	//Allows overwriting of database, use ONLY when testing is true;
 
 const gamesFileName = path.join(__dirname, TESTING ? 'TEST_GAMES.CSV' : 'GAMES.CSV');
 const playersFileName = path.join(__dirname, TESTING ? 'TEST_PLAYERS.JSON' : 'PLAYERS.JSON');
@@ -102,7 +102,7 @@ function updatePlayerDB(game) {
 	}
 
 	const playerDBText = JSON.stringify(playerDB, null, 4);
-	//console.log("PLAYER_DB: \n", playerDBText);
+	console.log("PLAYER_DB: \n", playerDBText);
 
 	try {
 	fs.writeFileSync(playersFileName, playerDBText);
@@ -124,8 +124,8 @@ function updatePlayerDB1(winner, loser, db) {
 	if (!db.hasOwnProperty(wa)) addNewPlayer(wa, db);
 	if (!db.hasOwnProperty(la)) addNewPlayer(la, db);
 
-	wad_elo = db[wa].elo1[db[wa].elo1.length-1];
-	lad_elo = db[la].elo1[db[la].elo1.length-1];
+	wad_elo = db[wa].elo[0].at(-1);
+	lad_elo = db[la].elo[0].at(-1);
 
 	const eloWin = wad_elo;
 	const eloLose = lad_elo;
@@ -150,10 +150,10 @@ function updatePlayerDB2(winAttack, winDefence, loseAttack, loseDefence, db) {
 	if (!db.hasOwnProperty(la)) addNewPlayer(la, db);
 	if (!db.hasOwnProperty(ld)) addNewPlayer(ld, db);
 
-	wad_elo = db[wa].elo2[db[wa].elo2.length-1];
-	wdd_elo = db[wd].elo2[db[wd].elo2.length-1];
-	lad_elo = db[la].elo2[db[la].elo2.length-1];
-	ldd_elo = db[ld].elo2[db[ld].elo2.length-1];
+	wad_elo = db[wa].elo[1].at(-1);
+	wdd_elo = db[wd].elo[1].at(-1);
+	lad_elo = db[la].elo[1].at(-1);
+	ldd_elo = db[ld].elo[1].at(-1);
 
 	const eloWin = (wad_elo + wdd_elo)/2;
 	const eloLose = (lad_elo + ldd_elo)/2;
@@ -172,11 +172,10 @@ function updatePlayerDB2(winAttack, winDefence, loseAttack, loseDefence, db) {
 function addNewPlayer(player, db) {
 	console.log("Creating new player: " + player);
 	db[player] = {
-	     elo1: [1000],
-	     elo2: [1000],
-	     games_won: 0,
-	     games_lost: 0,
-	     games_played: 0
+	     elo: [[1000], [1000]],
+	     games_won: [0,0],
+	     games_lost: [0,0],
+	     games_played: [0,0]
 	}
 }
 
@@ -184,13 +183,12 @@ function updatePlayer(player, newElo, outcome, mode, db) {
 	console.assert(!isNaN(newElo), "New Elo is not a number");
 	console.assert(outcome == 'W' || outcome == 'L', "Outcome should be W or L");
 
-	if (mode == 1) db[player].elo1.push(newElo);
-	else db[player].elo2.push(newElo);
+	const i = mode-1;
+	db[player].elo[i].push(newElo);
+	db[player].games_played[i]++;
 
-	db[player].games_played++;
-
-	if (outcome == 'W') db[player].games_won++;
-	else db[player].games_lost++;
+	if (outcome == 'W') db[player].games_won[i]++;
+	else db[player].games_lost[i]++;
 }
 
 function calculateEloChange(ra, rb, wl, db) {

@@ -52,15 +52,16 @@ async function savePlayerDB(db) {
 }
 
 async function loadAllGames() {
-	console.log("TODO: Load games");
 	const response = await fetch('/load-all-games');
 	const gamesText = await response.text();
 	const games = parseCSV(gamesText);
 	return games;
 }
-async function loadPlayers(game) {
-	console.log("TODO: Load games");
-	return {};
+async function loadPlayers() {
+	//console.log("TODO: Load games");
+	const response = await fetch('/load-players');
+	const playersJSON = await response.json();
+	return playersJSON;
 }
 
 function parseCSV(data) {

@@ -153,7 +153,7 @@ async function run() {
 		saveGame(newGame);
 		clearInputs();
 	});
-	console.log(playerDB);
+	console.log("Main playerDB: ", playerDB);
 	const dom =  {
 		wai: winAttack,
 		wdi: winDefence,
