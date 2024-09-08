@@ -1,33 +1,42 @@
 const table = document.getElementById('game-table');
-var testPlayers = ['TEST0','TEST1','TEST2']; 
+const heading = document.getElementById('heading');
+const changeModeBtn = document.getElementById('change-mode-btn');
 
-for (let l of ['A','B','C','D']) {
-	for (let i = 0; i <= 8; i++) {
-		testPlayers.push(l + i);
-	}
-}
-testPlayers.push('');
+const emptyTable = table.innerHTML;
+var GAME_MODE = 2;
 
-console.log(testPlayers);
+
+changeModeBtn.addEventListener("click", ()=> {
+	changeModeBtn.innerText = "Change to "+GAME_MODE+" vs "+GAME_MODE;
+
+	if (GAME_MODE == 1) GAME_MODE = 2;
+	else if (GAME_MODE == 2) GAME_MODE = 1;
+	
+	table.innerHTML = emptyTable;
+	heading.innerText = "Leaderboard: "+GAME_MODE+" vs "+GAME_MODE;
+	loadTable();
+});
+
 
 async function loadTable() {
-	const db = await loadData();
-	console.log(db);
-	let data = Object.entries(db).filter(g => g[0] != "testing");
+	const GM = GAME_MODE-1;
+
+	const playerDBText = await loadPlayers();
+	const playerDB = JSON.parse(playerDBText);
+	console.log(playerDB);
+	let data = Object.entries(playerDB);
+	data = data.filter(info => info[1].games_played[GM] > 0);
 	data.sort((a,b) => sortFn(a,b));
 
-	for (let [name,games] of data) {
-		if (testPlayers.includes(name)) continue;
 
+	for (let [name,info] of data) {
 
-		const elo = Math.floor(games[games.length-1].elo);
-		const totalGames = games.length;
-		const won = games.filter(g => (g.outcome=='W')).length;
-		const lost = games.filter(g => (g.outcome=='L')).length;
-		const wonAttack = games.filter(g => (g.outcome=='W' && g.position == 'A')).length;
-		const wonDefense = games.filter(g => (g.outcome=='W' && g.position == 'D')).length;
+		const elo = Math.round(info.elo[GM].at(-1));
+		const totalGames = info.games_played[GM];
+		const won = info.games_won[GM];
+		const lost = info.games_lost[GM];
 
-		console.log(name, elo, totalGames, won, lost, wonAttack, wonDefense);
+		//console.log(name, elo, totalGames, won, lost);
 
 		const row = document.createElement('tr');
 		row.appendChild(makeCell(name));
@@ -35,8 +44,6 @@ async function loadTable() {
 		row.appendChild(makeCell(totalGames));
 		row.appendChild(makeCell(won));
 		row.appendChild(makeCell(lost));
-		row.appendChild(makeCell(wonAttack));
-		row.appendChild(makeCell(wonDefense));
 
 		table.appendChild(row);
 		
@@ -51,19 +58,10 @@ function makeCell(text) {
 	return c;
 }
 
-function sortFn(a,b) {
-	let games1 = a[1];
-	let games2 = b[1];
+function sortFn(a,b,mode) {
+	let elo1 = a[1].elo[GAME_MODE-1].at(-1);
+	let elo2 = b[1].elo[GAME_MODE-1].at(-1);
 
-	let l1 = games1.length;
-	let l2 = games2.length;
-	
-	if (l1 == 0 || l2 == 0) return -1;
-
-	let elo1 = games1[l1-1].elo;
-	let elo2 = games2[l2-1].elo;
-
-	
 	return elo2 - elo1;
 }
 

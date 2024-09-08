@@ -6,25 +6,59 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>Foosball Eli</title>
 		<link rel="stylesheet" href="style.css">
-		<script src="tests.js"></script>
-		<script src="save_load.js"></script>
+		<script src="database.js"></script>
 	</head>
 	<body>
 		<h1 class='title'>MajuFoosball Elo System</h1>
-		<p id="info" >Play the game, then enter who won and who lost with their respective positions.</p>
-		<p>Winners</p>
-		<input type='text' id="winA" placeholder='Attack'>
-		<input type='text' id="winD" placeholder='Defence'>
-		<p>Losers</p>
-		<input type='text' id="loseA" placeholder='Attack'>
-		<input type='text' id="loseB" placeholder='Defence'>
-		<input type='submit' id='save' class='foosball-btn' value="Submit">
+		<p id="info">Play the game, then enter who won and who lost with their respective positions.</p>
+		<form id="form">
+			<p>Winners</p>
+			<input type='text' id="winA" placeholder='Attack' required>
+			<input type='text' id="winD" placeholder='Defence' required>
+			<p>Losers</p>
+			<input type='text' id="loseA" placeholder='Attack' required>
+			<input type='text' id="loseD" placeholder='Defence' required>
+			<input type='submit' id='save' class='foosball-btn' value="Submit">
+		</form>
 		<a href="Stats/PlayerStats.html" class='stats-btn btn'>Check player stats</a>
 		<a href="Leaderboard/Leaderboard.html" class='lead-btn btn'>Leaderboard</a>
-		<div class="horizontal-flex">
-			<button class="gamemode-btn btn" onclick="switchGameMode(1)">1 VS 1</button>
-			<button class="gamemode-btn btn" onclick="switchGameMode(2)">2 VS 2</button>
-		</div>
+		<a onclick="alternateGameModes()" class='btn' id="game-mode">Change to 1 vs 1</a>
+
 		<script src="main.js"></script>
+		<script>
+			function alternateGameModes() {
+				const gameModeBtn = document.getElementById('game-mode');
+				const winD = document.getElementById('winD');
+				const loseD = document.getElementById('loseD');
+
+
+				switch (GAME_MODE) {
+					case 2:
+					winD.style.visibility = 'hidden';
+					loseD.style.visibility = 'hidden';
+					winD.setAttribute("disabled", "disabled");
+					loseD.setAttribute("disabled", "disabled");
+					gameModeBtn.innerText = 'Change to 2 vs 2';
+					GAME_MODE = 1;
+					break;
+
+					case 1:
+					winD.style.visibility = 'visible';
+					loseD.style.visibility = 'visible';
+					winD.removeAttribute("disabled");
+					loseD.removeAttribute("disabled");
+					gameModeBtn.innerText = 'Change to 1 vs 1';
+					GAME_MODE = 2;
+					break;
+
+					default:
+					console.log("Unexpected value in gameModeBtn: " + gameModeBtn.innerText);
+				}
+
+			}
+		</script>
+
+				
+
 	</body>
 </html>
