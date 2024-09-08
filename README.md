@@ -13,12 +13,13 @@ Simple website to track elo of foosball in majuba
 **Player stats**
 - Input to search which stats you want 
 - Table that shows all games played by player
+- Remake table to show better on mobile
 
 ## Backend
 
 **Game input**
 - Generate game data 
-	- Oragnise data considernig type of game
+	- Oragnise data considering type of game
 	- Calculate elo change of each player (use highest players elo?, or average, or lowest?)
 - Send to server:
 	- Game: (Date, Type, WAttack, WDefense, LAttack, LDefence)

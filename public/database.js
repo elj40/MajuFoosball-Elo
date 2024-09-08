@@ -53,7 +53,10 @@ async function savePlayerDB(db) {
 
 async function loadAllGames() {
 	console.log("TODO: Load games");
-	return [];
+	const response = await fetch('/load-all-games');
+	const gamesText = await response.text();
+	const games = parseCSV(gamesText);
+	return games;
 }
 async function loadPlayers(game) {
 	console.log("TODO: Load games");
@@ -61,6 +64,11 @@ async function loadPlayers(game) {
 }
 
 function parseCSV(data) {
-	let parsed = [data];
+	const parsedLines = data.split("\n");
+	let parsed = parsedLines.map(l => l.split(","));
+
+	if (parsed[parsed.length-1].length==1) parsed.pop();
+	console.log(parsed);
+	
 	return parsed;
 }

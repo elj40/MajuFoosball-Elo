@@ -4,28 +4,30 @@
             1000,
             1016,
             998.5304984710245,
-            982.6658413353916
+            982.6658413353916,
+            1000.2570986091923
         ],
         "elo2": [
             1000
         ],
-        "games_won": 1,
+        "games_won": 2,
         "games_lost": 2,
-        "games_played": 3
+        "games_played": 4
     },
     "Y": {
         "elo1": [
             1000,
             984,
             1001.4695015289755,
-            1017.3341586646084
+            1017.3341586646084,
+            999.7429013908077
         ],
         "elo2": [
             1000
         ],
         "games_won": 2,
-        "games_lost": 1,
-        "games_played": 3
+        "games_lost": 2,
+        "games_played": 4
     },
     "Q": {
         "elo1": [
@@ -33,11 +35,12 @@
         ],
         "elo2": [
             1000,
-            1016
+            1016,
+            1030.5304984710244
         ],
-        "games_won": 1,
+        "games_won": 2,
         "games_lost": 0,
-        "games_played": 1
+        "games_played": 2
     },
     "W": {
         "elo1": [
@@ -45,34 +48,39 @@
         ],
         "elo2": [
             1000,
-            1016
+            1016,
+            1030.5304984710244
         ],
-        "games_won": 1,
+        "games_won": 2,
         "games_lost": 0,
-        "games_played": 1
+        "games_played": 2
     },
     "E": {
         "elo1": [
-            1000
-        ],
-        "elo2": [
             1000,
             984
         ],
+        "elo2": [
+            1000,
+            984,
+            969.4695015289755
+        ],
         "games_won": 0,
-        "games_lost": 1,
-        "games_played": 1
+        "games_lost": 3,
+        "games_played": 3
     },
     "R": {
         "elo1": [
-            1000
+            1000,
+            1016
         ],
         "elo2": [
             1000,
-            984
+            984,
+            969.4695015289755
         ],
-        "games_won": 0,
-        "games_lost": 1,
-        "games_played": 1
+        "games_won": 1,
+        "games_lost": 2,
+        "games_played": 3
     }
 }

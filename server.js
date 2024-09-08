@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const TESTING = true;		//Variable to put program in development state
-const OVERWRITE = true && TESTING;	//Allows overwriting of database, use ONLY when testing is true;
+const OVERWRITE = false && TESTING;	//Allows overwriting of database, use ONLY when testing is true;
 
 const gamesFileName = path.join(__dirname, TESTING ? 'TEST_GAMES.CSV' : 'GAMES.CSV');
 const playersFileName = path.join(__dirname, TESTING ? 'TEST_PLAYERS.JSON' : 'PLAYERS.JSON');
@@ -42,20 +42,6 @@ app.post('/save-game', (req, res)=> {
 	res.status(200).send("File saved successfully");
 });
 
-//app.post('/save-players', (req, res)=> {
-//
-//	console.assert(req.body, "Server says: req.body does not exist, expected text");
-//	console.assert(typeof(req.body) == 'string', "Server says: req.body is not a string");
-//	
-//	const playersDB = req.body;
-//
-//	fs.writeFile(playersFileName, playersDB, e => {
-//		if (err) {
-//			console.log(e);
-//			res.send("Could not append to file :(\nRead server error");
-//		}
-//	});
-//});
 
 app.get('/load-all-games', (req, res) => {
 	var games;
