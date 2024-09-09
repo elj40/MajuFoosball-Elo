@@ -62,7 +62,7 @@ function switchGameMode(mode) {
 }
 
 async function run() {
-	let testing = true;
+	let testing = false;
 	let playerDB;
 	playerDB = await loadPlayers();
 

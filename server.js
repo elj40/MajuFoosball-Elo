@@ -2,15 +2,21 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-const TESTING = true;		//Variable to put program in development state
+const TESTING = false;		//Variable to put program in development state
 const OVERWRITE = false && TESTING;	//Allows overwriting of database, use ONLY when testing is true;
 
 const gamesFileName = path.join(__dirname, TESTING ? 'TEST_GAMES.CSV' : 'GAMES.CSV');
 const playersFileName = path.join(__dirname, TESTING ? 'TEST_PLAYERS.JSON' : 'PLAYERS.JSON');
+const backupDirName = path.join(__dirname, 'backups');
 
 const IP = '0.0.0.0';
 const PORT = 3000;
-const BRANCH = "CSV"
+
+//Counter that keeps track of how many games were saved in a session,
+//this is a flawed and lazy approach but should be fine
+const GAMES_TILL_BACKUP = 5;
+var SESSION_GAMES = 0; 
+
 
 app = express();
 
@@ -36,8 +42,17 @@ app.post('/save-game', (req, res)=> {
 			console.log(game);
 			console.log("Successfully wrote to: ", gamesFileName);
 			if (!updatePlayerDB(game)) res.status(500).send("Failed to save game");
+
+			SESSION_GAMES++;
+			if (SESSION_GAMES >= GAMES_TILL_BACKUP) {
+				console.log("Making backups...");
+				makeBackups()
+				SESSION_GAMES = 0;
+			}
 		}
 	});
+
+
 
 	res.status(200).send("File saved successfully");
 });
@@ -71,7 +86,6 @@ app.get('/load-players', (req, res) => {
 });
 
 app.listen(PORT, () => {
-	console.log('On branch: ' + BRANCH);
 	console.log('Testing status: ' + TESTING);
 	console.log('Overwrite status: ' + OVERWRITE);
 	console.log('Listening on '+ IP + ':' + PORT);
@@ -83,6 +97,43 @@ app.listen(PORT, () => {
 		fs.writeFileSync(playersFileName, "");
 	}
 });
+
+function getDateToday() {
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var yyyy = today.getFullYear();
+
+	today = mm + '_' + dd + '_' + yyyy;
+	return today;
+}
+// pfn: playersFileName
+// gfn: gamesFileName
+function makeBackups() {
+	const today = getDateToday();
+	const pfn = TESTING ? 'TEST_PLAYERS.JSON' : 'PLAYERS.JSON';
+	const gfn = TESTING ? 'TEST_GAMES.CSV' : 'GAMES.CSV';
+
+	const bpfn = path.join(backupDirName, today+'_'+pfn+'.bak');
+	const bgfn = path.join(backupDirName, today+'_'+gfn+'.bak');
+
+	const playersText = fs.readFileSync(playersFileName, 'utf8')
+	const gamesText = fs.readFileSync(gamesFileName, 'utf8')
+
+	try {
+	fs.writeFileSync(bpfn, playersText)
+	console.log("Successfully wrote to: ", bpfn);
+	fs.writeFileSync(bgfn, gamesText)
+	console.log("Successfully wrote to: ", bgfn);
+	}
+	catch (err) {
+	console.error("Could not make backup: ", err);
+	return false;
+	}
+
+	console.log("Succesfully made backups")
+	return true;
+}
 
 function updatePlayerDB(game) {
 	const gameValues = game.split(",");
